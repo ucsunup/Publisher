@@ -1,2 +1,2 @@
 # Publisher
-Utils for publish library
+Utils for publish library: maven, jcenter, bintray
