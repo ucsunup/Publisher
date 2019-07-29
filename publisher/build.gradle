@@ -1,0 +1,13 @@
+apply plugin: 'groovy'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation gradleApi()
+    implementation localGroovy()
+    compile 'com.android.tools.build:gradle:2.3.0'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+//apply plugin: "com.ucsunup.publisher"
