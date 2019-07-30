@@ -3,7 +3,7 @@ Publisher
 
 You can visit [The website](https://github.com/ucsunup/Publisher)
 
-### Use
+Use
 ========
 
 Publisher is a util for publish artifact with Android and support: maven, jcenter, bintray
@@ -21,7 +21,7 @@ Publisher is a util for publish artifact with Android and support: maven, jcente
 	}
 	apply plugin: 'com.ucsunup.publisher'
 	```
-Latest version is: `0.0.1`
+	Latest version is: `0.0.1`
 
 2. Then you should config in `local.properties`
 	```xml
@@ -71,18 +71,19 @@ Latest version is: `0.0.1`
 
 For more details see [Publisher](https://github.com/ucsunup/Publisher).
 
-### QA
+QA
 ========
 
 If you have any question, please write it.
 
-### Contribute
+Contribute
 ========
 
 If you interesting in it and want to contribute, i will be glad for that.
 
-### License
+License
 ========
+
 	Copyright 2019 ucsunup
 
 	Licensed under the Apache License, Version 2.0 (the "License");
