@@ -28,6 +28,19 @@ class SignConfigurator extends BaseConfigurator {
         println("Sign Config: " + SignProperties.instance.needSign)
         if (SignProperties.instance.needSign) {
             project.plugins.apply(SigningPlugin)
+            // Sign target artifact
+            SigningExtension signingExtension = project.extensions["signing"]
+            PublishingExtension publishingExtension = project.extensions["publishing"]
+//            if (ProjectInfo.instance.isAndroid) {
+//                signingExtension.sign(project.configurations.archives)
+//            } else {
+//                signingExtension.sign(ProjectInfo.instance.targetProject.tasks["jar"])
+//                signingExtension.sign(project.tasks[ProjectModifier.SourcesJar.sName])
+//                signingExtension.sign(project.tasks[ProjectModifier.JavadocJar.sName])
+//                signingExtension.sign(project.tasks[ProjectModifier.GroovydocJar.sName])
+//            }
+            signingExtension.sign(publishingExtension.publications.mavenJava)
+
             // Set config
             project.gradle.taskGraph.whenReady { taskGraph ->
                 if (taskGraph.allTasks.any { it instanceof Sign }) {
@@ -37,17 +50,6 @@ class SignConfigurator extends BaseConfigurator {
                         project.ext."signing.password" = SignProperties.instance.password
                     }
                 }
-            }
-            // Sign target artifact
-            SigningExtension signingExtension = project.extensions.getByName("signing")
-            PublishingExtension publishingExtension = project.extensions.getByName("publishing")
-            signingExtension.sign(publishingExtension.publications.mavenJava)
-            if (ProjectInfo.instance.isAndroid) {
-                signingExtension.sign(ProjectInfo.instance.targetProject.configurations.archives)
-            } else {
-                signingExtension.sign(ProjectInfo.instance.targetProject.tasks["jar"])
-                signingExtension.sign(ProjectInfo.instance.targetProject.tasks["javadocJar"])
-                signingExtension.sign(ProjectInfo.instance.targetProject.tasks["sourcesJar"])
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.ucsunup.publisher.core
 
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 
 @Singleton
@@ -16,21 +18,30 @@ class MavenConfigurator extends BaseConfigurator {
 
     @Override
     def config(Project project) {
-        ProjectInfo.instance.targetProject.plugins.apply(MavenPublishPlugin)
-        ProjectInfo.instance.targetProject.tasks.getByName("publish").setGroup("Publisher")
-        ProjectInfo.instance.targetProject.tasks.getByName("publishToMavenLocal").setGroup("Publisher")
+        project.plugins.apply(MavenPublishPlugin)
+        project.tasks.getByName("publish").setGroup("Publisher")
+        project.tasks.getByName("publishToMavenLocal").setGroup("Publisher")
 
-        PublishingExtension publishingExtension = ProjectInfo.instance.targetProject.extensions.getByName("publishing")
+        PublishingExtension publishingExtension = project.extensions["publishing"]
         publishingExtension.publications {
             try {
-                mavenJava(org.gradle.api.publish.maven.MavenPublication) {
+                mavenJava(MavenPublication) {
                     groupId = MavenPublicationProperties.instance.groupId
                     artifactId = MavenPublicationProperties.instance.artifactId
                     version = MavenPublicationProperties.instance.version
 
-                    from ProjectInfo.instance.targetProject.components.java
-//                    artifact ProjectInfo.instance.targetProject.tasks[ProjectModifier.SourcesJar.sName]
-//                    artifact ProjectInfo.instance.targetProject.tasks[ProjectModifier.JavadocJar.sName]
+                    if (ProjectInfo.instance.isAndroid) {
+                        configurations project.configurations.archives
+                        artifact project.tasks[ProjectModifier.TASK_ANDROIDJAVADOCJAR]
+                        artifact project.tasks[ProjectModifier.TASK_ANDROIDSOURCESJAR]
+                    } else {
+                        from project.components.java
+                        artifact project.tasks[ProjectModifier.TASK_SOURCESJAR]
+                        artifact project.tasks[ProjectModifier.TASK_JAVADOCJAR]
+                        if (project.plugins.hasPlugin("groovy")) {
+                            artifact project.tasks[ProjectModifier.TASK_GROOVYDOCJAR]
+                        }
+                    }
 //                    versionMapping {
 //                        usage("java-api") {
 //                            fromResolutionOf("runtimeClasspath")
@@ -68,12 +79,11 @@ class MavenConfigurator extends BaseConfigurator {
                 println("publications: " + e)
             }
         }
-//        publishingExtension.repositories.add(this.mavenRepository)
         publishingExtension.repositories {
             maven {
                 try {
                     // change URLs to point to your repos, e.g. http://my.org/repo
-                    url = ProjectInfo.instance.targetProject.uri(MavenPublicationProperties.instance.version.endsWith('SNAPSHOT')
+                    url = project.uri(MavenPublicationProperties.instance.version.endsWith('SNAPSHOT')
                             || MavenPublicationProperties.instance.version.endsWith('snapshot')
                             ? MavenRepositoryProperties.instance.uriSnapshot
                             : MavenRepositoryProperties.instance.uriRelease)
