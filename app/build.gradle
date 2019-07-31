@@ -1,16 +1,5 @@
 apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-        google()
-    }
-    dependencies {
-//        classpath 'com.ucsunup:publisher:1.0.0'
-    }
-}
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
