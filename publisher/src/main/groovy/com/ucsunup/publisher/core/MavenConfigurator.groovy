@@ -19,8 +19,6 @@ class MavenConfigurator extends BaseConfigurator {
     @Override
     def config(Project project) {
         project.plugins.apply(MavenPublishPlugin)
-        project.tasks.getByName("publish").setGroup("Publisher")
-        project.tasks.getByName("publishToMavenLocal").setGroup("Publisher")
 
         PublishingExtension publishingExtension = project.extensions["publishing"]
         publishingExtension.publications {
@@ -99,6 +97,19 @@ class MavenConfigurator extends BaseConfigurator {
                     println("repositories: " + e)
                 }
             }
+        }
+
+        Task repositoryTask = project.tasks.getByName("publishMavenJavaPublicationToMavenRepository")
+        project.tasks.register("publishToMaven") {
+            dependsOn repositoryTask.name
+            group "Publisher"
+            description repositoryTask.description
+        }
+        Task localTask = project.tasks.getByName("publishMavenJavaPublicationToMavenLocal")
+        project.tasks.register("publishToMavenL") {
+            dependsOn localTask.name
+            group "Publisher"
+            description localTask.description
         }
     }
 }

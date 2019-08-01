@@ -21,7 +21,7 @@ Publisher is a util for publish artifact with Android and support: maven, jcente
 	}
 	apply plugin: 'com.ucsunup.publisher'
 	```
-	Latest version is: `0.0.1`
+	Latest version is: `0.0.2`
 
 2. Then you should config in `local.properties`
 	```xml
@@ -58,11 +58,11 @@ Publisher is a util for publish artifact with Android and support: maven, jcente
 
 3. If push maven configed by `local.properties`
 	```xml
-	gradlew publish
+	gradlew publishToMaven
 	```
 	if push local maven
 	```xml
-	gradlew publishToMavenLocal
+	gradlew publishToMavenL
 	```
 	if want to check more tasks and check `Publisher tasks`
 	```xml

@@ -75,10 +75,12 @@ class ProjectModifier {
             dependsOn 'javadoc'
             from ProjectInfo.instance.targetProject.javadoc.destinationDir
         }
-        ProjectInfo.instance.targetProject.tasks.register(TASK_GROOVYDOCJAR, Jar.class) {
-            classifier = 'groovydoc'
-            dependsOn 'groovydoc'
-            from ProjectInfo.instance.targetProject.groovydoc.destinationDir
+        if (ProjectInfo.instance.targetProject.plugins.hasPlugin("groovy")) {
+            ProjectInfo.instance.targetProject.tasks.register(TASK_GROOVYDOCJAR, Jar.class) {
+                classifier = 'groovydoc'
+                dependsOn 'groovydoc'
+                from ProjectInfo.instance.targetProject.groovydoc.destinationDir
+            }
         }
     }
 
