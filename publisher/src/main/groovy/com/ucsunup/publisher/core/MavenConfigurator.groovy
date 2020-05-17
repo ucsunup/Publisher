@@ -30,8 +30,8 @@ class MavenConfigurator extends BaseConfigurator {
 
                     if (ProjectInfo.instance.isAndroid) {
                         configurations project.configurations.archives
-                        artifact project.tasks[ProjectModifier.TASK_ANDROIDJAVADOCJAR]
-                        artifact project.tasks[ProjectModifier.TASK_ANDROIDSOURCESJAR]
+                        artifact project.tasks[ProjectModifier.TASK_JAVADOCJAR_ANDROID]
+                        artifact project.tasks[ProjectModifier.TASK_SOURCESJAR_ANDROID]
                     } else {
                         from project.components.java
                         artifact project.tasks[ProjectModifier.TASK_SOURCESJAR]

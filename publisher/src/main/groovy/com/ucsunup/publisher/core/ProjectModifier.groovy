@@ -6,9 +6,9 @@ import org.gradle.api.tasks.bundling.Jar
 @Singleton
 class ProjectModifier {
 
-    public static final def TASK_ANDROIDJAVADOC = "androidJavadoc"
-    public static final def TASK_ANDROIDJAVADOCJAR = "androidJavadocJar"
-    public static final def TASK_ANDROIDSOURCESJAR = "androidSourcesJar"
+    public static final def TASK_JAVADOC_ANDROID = "androidJavadoc"
+    public static final def TASK_JAVADOCJAR_ANDROID = "androidJavadocJar"
+    public static final def TASK_SOURCESJAR_ANDROID = "androidSourcesJar"
     public static final def TASK_SOURCESJAR = "sourcesJar"
     public static final def TASK_JAVADOCJAR = "javadocJar"
     public static final def TASK_GROOVYDOCJAR = "groovydocJar"
@@ -46,18 +46,18 @@ class ProjectModifier {
 
     void configAndroid() {
         // config task
-        ProjectInfo.instance.targetProject.tasks.register(TASK_ANDROIDJAVADOC, javadoc.class) {
+        ProjectInfo.instance.targetProject.tasks.register(TASK_JAVADOC_ANDROID, javadoc.class) {
             source = ProjectInfo.instance.targetProject.android.sourceSets.main.java.srcDirs
             classpath += ProjectInfo.instance.targetProject.files(
                     ProjectInfo.instance.targetProject.android.getBootClasspath().join(File.pathSeparator))
             classpath += ProjectInfo.instance.targetProject.configurations.compile
         }
-        ProjectInfo.instance.targetProject.tasks.register(TASK_ANDROIDJAVADOCJAR, Jar.class) {
+        ProjectInfo.instance.targetProject.tasks.register(TASK_JAVADOCJAR_ANDROID, Jar.class) {
             classifier = 'javadoc'
-            dependsOn TASK_ANDROIDJAVADOC
-            from ProjectInfo.instance.targetProject.tasks[TASK_ANDROIDJAVADOC].destinationDir
+            dependsOn TASK_JAVADOC_ANDROID
+            from ProjectInfo.instance.targetProject.tasks[TASK_JAVADOC_ANDROID].destinationDir
         }
-        ProjectInfo.instance.targetProject.tasks.register(TASK_ANDROIDSOURCESJAR, Jar.class) {
+        ProjectInfo.instance.targetProject.tasks.register(TASK_SOURCESJAR_ANDROID, Jar.class) {
             classifier = 'sources'
             from ProjectInfo.instance.targetProject.android.sourceSets.main.java.source
         }
